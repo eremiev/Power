@@ -10,6 +10,7 @@ using PowerJump.Models;
 
 namespace PowerJump.Areas.Admin.Controllers
 {
+    [Authorize]
     public class EventsController : Controller
     {
         private PowerJumpContext db = new PowerJumpContext();

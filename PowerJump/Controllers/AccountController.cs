@@ -55,6 +55,7 @@ namespace PowerJump.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
+        [Route("admin")]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;

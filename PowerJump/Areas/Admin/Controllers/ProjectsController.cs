@@ -10,6 +10,7 @@ using PowerJump.Models;
 
 namespace PowerJump.Areas.Admin.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private PowerJumpContext db = new PowerJumpContext();
