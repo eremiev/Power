@@ -16,6 +16,7 @@ namespace PowerJump.Areas.Admin.Controllers
         private PowerJumpContext db = new PowerJumpContext();
 
         // GET: Admin/Projects
+        [Route("admin")]
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
