@@ -13,7 +13,7 @@ namespace PowerJump.Areas.Admin.Controllers
     [Authorize]
     public class EventsController : Controller
     {
-        private PowerJumpContext db = new PowerJumpContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin/Events
         public ActionResult Index()

@@ -13,7 +13,7 @@ namespace PowerJump.Areas.Admin.Controllers
     [Authorize]
     public class ProjectsController : Controller
     {
-        private PowerJumpContext db = new PowerJumpContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin/Projects
         [Route("admin")]

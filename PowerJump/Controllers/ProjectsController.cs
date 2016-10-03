@@ -12,7 +12,7 @@ namespace PowerJump.Controllers
 {
     public class ProjectsController : Controller
     {
-        private PowerJumpContext db = new PowerJumpContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
         public ActionResult Index()

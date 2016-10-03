@@ -12,7 +12,7 @@ namespace PowerJump.Controllers
 {
     public class EventsController : Controller
     {
-        private PowerJumpContext db = new PowerJumpContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Events
         public ActionResult Index()
