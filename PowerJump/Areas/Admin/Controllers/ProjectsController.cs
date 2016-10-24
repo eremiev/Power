@@ -16,7 +16,7 @@ namespace PowerJump.Areas.Admin.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin/Projects
-        [Route("admin")]
+       // [Route("admin")]
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
@@ -48,7 +48,7 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Date")] Project project)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,Date")] Project project, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
