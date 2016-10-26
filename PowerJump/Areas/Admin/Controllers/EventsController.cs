@@ -8,109 +8,115 @@ using System.Web;
 using System.Web.Mvc;
 using PowerJump.Models;
 
-namespace PowerJump.Controllers
+namespace PowerJump.Areas.Admin.Controllers
 {
-    public class ProjectsController : Controller
+    [Authorize]
+    public class EventsController : Controller
     {
-        private PowerJumpContext db = new PowerJumpContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Projects
+        // GET: Admin/Events
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            var events = db.Events;
+            return View(events.ToList());
         }
 
-        // GET: Projects/Details/5
+        // GET: Admin/Events/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Event @event = db.Events.Find(id);
+            if (@event == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(@event);
         }
 
-        // GET: Projects/Create
+        // GET: Admin/Events/Create
         public ActionResult Create()
         {
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title");
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: Admin/Events/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Date")] Project project)
+        public ActionResult Create([Bind(Include = "Id,Title,Description,Date,ProjectId")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
+                db.Events.Add(@event);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", @event.ProjectId);
+            return View(@event);
         }
 
-        // GET: Projects/Edit/5
+        // GET: Admin/Events/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Event @event = db.Events.Find(id);
+            if (@event == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", @event.ProjectId);
+            return View(@event);
         }
 
-        // POST: Projects/Edit/5
+        // POST: Admin/Events/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Date")] Project project)
+        public ActionResult Edit([Bind(Include = "Id,Title,Description,Date,ProjectId")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(project).State = EntityState.Modified;
+                db.Entry(@event).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", @event.ProjectId);
+            return View(@event);
         }
 
-        // GET: Projects/Delete/5
+        // GET: Admin/Events/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            Event @event = db.Events.Find(id);
+            if (@event == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+            return View(@event);
         }
 
-        // POST: Projects/Delete/5
+        // POST: Admin/Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            Event @event = db.Events.Find(id);
+            db.Events.Remove(@event);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -7,13 +7,13 @@ namespace PowerJump.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class add_Photo_table : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(add_Photo_table));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610021326532_InitialCreate"; }
+            get { return "201610242110563_add_Photo_table"; }
         }
         
         string IMigrationMetadata.Source

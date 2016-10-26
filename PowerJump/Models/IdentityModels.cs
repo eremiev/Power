@@ -25,6 +25,13 @@ namespace PowerJump.Models
         {
         }
 
+       public DbSet<Gallery> Galleries { get; set; }
+
+      //  public System.Data.Entity.DbSet<PowerJump.Models.Project> Projects { get; set; }
+
+        // public System.Data.Entity.DbSet<PowerJump.Models.Event> Events { get; set; }
+
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
