@@ -197,9 +197,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\EventsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\EventsController2.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhotosController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProjectsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ProjectsController2.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -241,16 +240,6 @@
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Areas\Admin\Views\Events2\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Events2\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Events2\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Events2\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Events2\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Projects2\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Projects2\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Projects2\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Projects2\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Projects2\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
@@ -264,6 +253,11 @@
     <Content Include="Areas\Admin\Views\Projects\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Projects\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Projects\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Photos\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Photos\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Photos\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Photos\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Photos\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -313,6 +307,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
