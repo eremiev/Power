@@ -10,16 +10,16 @@ using PowerJump.Models;
 
 namespace PowerJump.Areas.Admin.Controllers
 {
-    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin/Projects
-       // [Route("admin")]
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            //   var projects = db.Galleries.ToList();
+            var projects = db.Galleries.OfType<Project>().ToList();
+            return View(projects);
         }
 
         // GET: Admin/Projects/Details/5
@@ -29,7 +29,7 @@ namespace PowerJump.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = (Project)db.Galleries.Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -48,11 +48,11 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Date")] Project project, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "GalleryId,Title,Description,Date")] Project project)
         {
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
+                db.Galleries.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -67,7 +67,7 @@ namespace PowerJump.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = (Project)db.Galleries.Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -80,7 +80,7 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Date")] Project project)
+        public ActionResult Edit([Bind(Include = "GalleryId,Title,Description,Date")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace PowerJump.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
+            Project project = (Project)db.Galleries.Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -111,8 +111,8 @@ namespace PowerJump.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Project project = db.Projects.Find(id);
-            db.Projects.Remove(project);
+            Project project = (Project)db.Galleries.Find(id);
+            db.Galleries.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

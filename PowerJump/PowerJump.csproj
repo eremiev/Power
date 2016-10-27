@@ -195,6 +195,11 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EventsController2.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProjectsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProjectsController2.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -236,9 +241,29 @@
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Areas\Admin\Views\Events2\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Events2\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Events2\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Events2\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Events2\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects2\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects2\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects2\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects2\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects2\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Events\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Events\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Events\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Events\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Events\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Projects\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -322,7 +347,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52386</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

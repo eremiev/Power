@@ -10,26 +10,25 @@ using PowerJump.Models;
 
 namespace PowerJump.Areas.Admin.Controllers
 {
-    [Authorize]
     public class EventsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Admin/Events
+        // GET: admin/events
         public ActionResult Index()
         {
-            var events = db.Events;
-            return View(events.ToList());
+            var events = db.Galleries.OfType<Event>().ToList();
+            return View(events);
         }
 
-        // GET: Admin/Events/Details/5
+        // GET: admin/events/details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = db.Events.Find(id);
+            Event @event = (Event)db.Galleries.Find(id);
             if (@event == null)
             {
                 return HttpNotFound();
@@ -37,53 +36,50 @@ namespace PowerJump.Areas.Admin.Controllers
             return View(@event);
         }
 
-        // GET: Admin/Events/Create
+        // GET: admin/events/create
         public ActionResult Create()
         {
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title");
             return View();
         }
 
-        // POST: Admin/Events/Create
+        // POST: admin/events/create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Description,Date,ProjectId")] Event @event)
+        public ActionResult Create([Bind(Include = "GalleryId,Title,Description,Date")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                db.Events.Add(@event);
+                db.Galleries.Add(@event);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", @event.ProjectId);
             return View(@event);
         }
 
-        // GET: Admin/Events/Edit/5
+        // GET: admin/events/edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = db.Events.Find(id);
+            Event @event = (Event)db.Galleries.Find(id);
             if (@event == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", @event.ProjectId);
             return View(@event);
         }
 
-        // POST: Admin/Events/Edit/5
+        // POST: admin/events/edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Description,Date,ProjectId")] Event @event)
+        public ActionResult Edit([Bind(Include = "GalleryId,Title,Description,Date")] Event @event)
         {
             if (ModelState.IsValid)
             {
@@ -91,18 +87,17 @@ namespace PowerJump.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", @event.ProjectId);
             return View(@event);
         }
 
-        // GET: Admin/Events/Delete/5
+        // GET: admin/events/delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Event @event = db.Events.Find(id);
+            Event @event = (Event)db.Galleries.Find(id);
             if (@event == null)
             {
                 return HttpNotFound();
@@ -110,13 +105,13 @@ namespace PowerJump.Areas.Admin.Controllers
             return View(@event);
         }
 
-        // POST: Admin/Events/Delete/5
+        // POST: admin/events/delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Event @event = db.Events.Find(id);
-            db.Events.Remove(@event);
+            Event @event = (Event)db.Galleries.Find(id);
+            db.Galleries.Remove(@event);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
