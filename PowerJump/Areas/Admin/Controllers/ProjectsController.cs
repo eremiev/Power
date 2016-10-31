@@ -54,7 +54,8 @@ namespace PowerJump.Areas.Admin.Controllers
             var validImageTypes = new string[]
              {
                     "image/gif",
-                    "image/png"
+                    "image/png",
+                    "image/jpeg"
              };
 
             if (photo == null || photo.ContentLength == 0)
@@ -63,7 +64,7 @@ namespace PowerJump.Areas.Admin.Controllers
             }
             else if (!validImageTypes.Contains(photo.ContentType))
             {
-                ModelState.AddModelError("photo", "Please choose either a GIF or PNG image.");
+                ModelState.AddModelError("photo", "Please choose either a GIF, JPEG or PNG image.");
             }
 
             if (ModelState.IsValid)

@@ -217,6 +217,10 @@
     <Compile Include="Migrations\201610242110563_add_Photo_table.Designer.cs">
       <DependentUpon>201610242110563_add_Photo_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610311549414_add_validation_to_Project_model.cs" />
+    <Compile Include="Migrations\201610311549414_add_validation_to_Project_model.Designer.cs">
+      <DependentUpon>201610311549414_add_validation_to_Project_model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Event.cs" />
@@ -326,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610242110563_add_Photo_table.resx">
       <DependentUpon>201610242110563_add_Photo_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610311549414_add_validation_to_Project_model.resx">
+      <DependentUpon>201610311549414_add_validation_to_Project_model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -10,11 +10,15 @@ namespace PowerJump.Models
     [Table("Projects")]
     public class Project : Gallery
     {
+        [Required]
         [Display(Name = "Име")]
+        [StringLength(60, MinimumLength = 3)]
         public string Title { get; set; }
 
-        [DataType(DataType.MultilineText)]
+        [Required]
         [Display(Name = "Описание")]
+        [DataType(DataType.MultilineText)]
+        [StringLength(5000, MinimumLength = 3)]
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
@@ -22,9 +26,5 @@ namespace PowerJump.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
-        //[Display(Name = "Снимка")]
-        //[DataType(DataType.Upload)]
-        //HttpPostedFileBase FileName { get; set; }
-        
     }
 }
