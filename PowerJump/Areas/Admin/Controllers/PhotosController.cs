@@ -112,12 +112,14 @@ namespace PowerJump.Areas.Admin.Controllers
         // POST: Admin/Photos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, string goTo)
         {
             Photo photo = db.Photos.Find(id);
+
+            System.IO.File.Delete(Server.MapPath(photo.Path));
             db.Photos.Remove(photo);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", goTo);
         }
 
         protected override void Dispose(bool disposing)

@@ -6,11 +6,10 @@
 
 <h2>Edit</h2>
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Project</h4>
         <hr />
@@ -40,6 +39,17 @@
                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
             </div>
         </div>
+        @if (Model.Photos.Count > 0)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Photos, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <img src="@Url.Content(Model.Photos.ToArray()[0].Path)" alt="Image" width="100" height="100" />
+                </div>
+
+            </div>
+        }
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -47,6 +57,19 @@
             </div>
         </div>
     </div>
+}
+
+@if (Model.Photos.Count > 0)
+{
+    using (Html.BeginForm("Delete", "Photos", new { id = Model.Photos.ToArray()[0].Id, goTo = "Projects" }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+
+        </div>
+    }
 }
 
 <div>
