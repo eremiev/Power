@@ -17,8 +17,10 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Photos
         public ActionResult Index()
         {
-            var photos = db.Photos.Include(p => p.Gallery);
-            return View(photos.ToList());
+            ViewBag.Events = db.Galleries.OfType<Event>().ToList();
+            ViewBag.Projects = db.Galleries.OfType<Project>().ToList();
+
+            return View();
         }
 
         // GET: Admin/Photos/Details/5
@@ -39,7 +41,8 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Photos/Create
         public ActionResult Create()
         {
-            ViewBag.GalleryId = new SelectList(db.Galleries, "GalleryId", "GalleryId");
+            ViewBag.Events = new SelectList(db.Galleries.OfType<Event>(), "GalleryId", "Title");
+            ViewBag.Projects = new SelectList(db.Galleries.OfType<Project>(), "GalleryId", "Title");
             return View();
         }
 
@@ -48,12 +51,31 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Path,GalleryId")] Photo photo)
+        public ActionResult Create([Bind()] Photo photo, int id, HttpPostedFileBase image)
         {
+
+            var validImageTypes = new string[]
+         {
+                    "image/gif",
+                    "image/png",
+                    "image/jpeg"
+         };
+
+            if (image == null || image.ContentLength == 0)
+            {
+                ModelState.AddModelError("image", "This field is required");
+            }
+            else if (!validImageTypes.Contains(image.ContentType))
+            {
+                ModelState.AddModelError("image", "Please choose either a GIF, JPEG or PNG image.");
+            }
+
+
             if (ModelState.IsValid)
             {
-                db.Photos.Add(photo);
-                db.SaveChanges();
+                //db.Galleries.Find(id);
+                //db.Photos.Add(photo);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -132,3 +154,4 @@ namespace PowerJump.Areas.Admin.Controllers
         }
     }
 }
+

@@ -7,27 +7,34 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm(null, null, new { id = ViewBag.GalleryId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Photo</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        Избери
         <div class="form-group">
-            @Html.LabelFor(model => model.Path, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Gallery, "Събитие", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Path, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Path, "", new { @class = "text-danger" })
+                @Html.DropDownList("Events", null, string.Empty, htmlAttributes: new { @class = "form-control", @onchange = "DropdownSelectChange('Events', value)" })
+                @Html.ValidationMessageFor(model => model.GalleryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        или
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gallery, "Проекти", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Projects", null, string.Empty, htmlAttributes: new { @class = "form-control", @onchange = "DropdownSelectChange('Projects', value)" })
+                @Html.ValidationMessageFor(model => model.GalleryId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.GalleryId, "GalleryId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("GalleryId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.GalleryId, "", new { @class = "text-danger" })
+                <input type="file" name="image" />
+                @Html.ValidationMessage("image", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -45,4 +52,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/helper.js")
 }
+
+
+
+
