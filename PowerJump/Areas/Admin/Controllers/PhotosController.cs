@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PowerJump.Models;
+using System.IO;
 
 namespace PowerJump.Areas.Admin.Controllers
 {
@@ -27,15 +28,13 @@ namespace PowerJump.Areas.Admin.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Photo photo = db.Photos.Find(id);
-            if (photo == null)
-            {
+
+            var gallery = db.Photos.Where(x => x.GalleryId == id).ToList();
+            if (gallery == null)
                 return HttpNotFound();
-            }
-            return View(photo);
+
+            return View(gallery);
         }
 
         // GET: Admin/Photos/Create
@@ -51,8 +50,11 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind()] Photo photo, int id, HttpPostedFileBase image)
+        public ActionResult Create([Bind(Include = "Events,Projects")] Photo photo, FormCollection form, HttpPostedFileBase image)
         {
+            Gallery gallery = null;
+            string dropdownEvent = form["Events"];
+            string dropdownProject = form["Projects"];
 
             var validImageTypes = new string[]
          {
@@ -61,25 +63,45 @@ namespace PowerJump.Areas.Admin.Controllers
                     "image/jpeg"
          };
 
-            if (image == null || image.ContentLength == 0)
-            {
-                ModelState.AddModelError("image", "This field is required");
-            }
-            else if (!validImageTypes.Contains(image.ContentType))
-            {
-                ModelState.AddModelError("image", "Please choose either a GIF, JPEG or PNG image.");
-            }
+            if (!string.IsNullOrEmpty(dropdownEvent))
+                gallery = db.Galleries.Find(Convert.ToInt32(dropdownEvent));
+            else if (!string.IsNullOrEmpty(dropdownProject))
+                gallery = db.Galleries.Find(Convert.ToInt32(dropdownProject));
+            else
+                ModelState.AddModelError("dropdown", "Please chose Event or Project!");
 
+
+            if (image == null || image.ContentLength == 0)
+                ModelState.AddModelError("image", "This field is required");
+            else if (!validImageTypes.Contains(image.ContentType))
+                ModelState.AddModelError("image", "Please choose either a GIF, JPEG or PNG image.");
 
             if (ModelState.IsValid)
             {
-                //db.Galleries.Find(id);
-                //db.Photos.Add(photo);
-                //db.SaveChanges();
+                if (gallery != null)
+                {
+                    if (image != null && image.ContentLength > 0)
+                    {
+                        string name = Path.GetFileName(image.FileName);
+                        var uploadDir = "~/Content/uploads";
+                        var imagePath = Path.Combine(Server.MapPath(uploadDir), image.FileName);
+                        var imageUrl = Path.Combine(uploadDir, image.FileName);
+                        image.SaveAs(imagePath);
+
+                        Photo foto = new Photo();
+                        foto.Path = imageUrl;
+                        foto.GalleryId = gallery.GalleryId;
+                        db.Photos.Add(foto);
+                        db.SaveChanges();
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GalleryId = new SelectList(db.Galleries, "GalleryId", "GalleryId", photo.GalleryId);
+            ViewBag.Events = new SelectList(db.Galleries.OfType<Event>(), "GalleryId", "Title");
+            ViewBag.Projects = new SelectList(db.Galleries.OfType<Project>(), "GalleryId", "Title");
+
             return View(photo);
         }
 

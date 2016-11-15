@@ -27,7 +27,8 @@
             @Html.LabelFor(model => model.Gallery, "Проекти", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("Projects", null, string.Empty, htmlAttributes: new { @class = "form-control", @onchange = "DropdownSelectChange('Projects', value)" })
-                @Html.ValidationMessageFor(model => model.GalleryId, "", new { @class = "text-danger" })
+
+                @Html.ValidationMessage("dropdown", new { @class = "text-danger" })
             </div>
         </div>
 
