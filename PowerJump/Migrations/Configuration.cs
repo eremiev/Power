@@ -29,24 +29,51 @@ namespace PowerJump.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
 
+            var roleStore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+
             if (!context.Roles.Any(r => r.Name == "Admin"))
             {
-                var store = new RoleStore<IdentityRole>(context);
-                var manager = new RoleManager<IdentityRole>(store);
                 var role = new IdentityRole { Name = "Admin" };
-
-                manager.Create(role);
+                roleManager.Create(role);
             }
+
+            if (!context.Roles.Any(r => r.Name == "Normal"))
+            {
+                var role = new IdentityRole { Name = "Normal" };
+                roleManager.Create(role);
+            }
+
             context.SaveChanges();
-            if (!(context.Users.Any(u => u.UserName == "test")))
+
+            if (!(context.Users.Any(u => u.UserName == "admin")))
             {
                 var userStore = new UserStore<ApplicationUser>(context);
                 var userManager = new UserManager<ApplicationUser>(userStore);
-                var userToInsert = new ApplicationUser { Email = "test@email.com", UserName = "test@email.com", PhoneNumber = "0797697898" };
-                userManager.Create(userToInsert, "Test123!");
-
+                var userToInsert = new ApplicationUser
+                {
+                    Email = "admin@email.com",
+                    UserName = "admin@email.com",
+                    PhoneNumber = "0797697898"
+                };
+                userManager.Create(userToInsert, "Admin123!");
                 userManager.AddToRole(userToInsert.Id, "Admin");
             }
+
+            if (!(context.Users.Any(u => u.UserName == "normal")))
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                var userToInsert = new ApplicationUser
+                {
+                    Email = "normal@email.com",
+                    UserName = "normal@email.com",
+                    PhoneNumber = "0797697898"
+                };
+                userManager.Create(userToInsert, "Normal123!");
+                userManager.AddToRole(userToInsert.Id, "Normal");
+            }
+
             context.SaveChanges();
         }
     }

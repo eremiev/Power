@@ -11,6 +11,7 @@ using System.IO;
 
 namespace PowerJump.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin,Normal")]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -146,8 +147,7 @@ namespace PowerJump.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Project project = (Project)db.Galleries.Find(id);
-            // TODO 
-            // delete all photos releated to this project
+            // TODO: delete all photos releated to this project
             db.Galleries.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -11,6 +11,7 @@ using System.IO;
 
 namespace PowerJump.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PhotosController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -62,7 +63,7 @@ namespace PowerJump.Areas.Admin.Controllers
                     "image/png",
                     "image/jpeg"
          };
-
+            //TODO: save image with same filename
             if (!string.IsNullOrEmpty(dropdownEvent))
                 gallery = db.Galleries.Find(Convert.ToInt32(dropdownEvent));
             else if (!string.IsNullOrEmpty(dropdownProject))
