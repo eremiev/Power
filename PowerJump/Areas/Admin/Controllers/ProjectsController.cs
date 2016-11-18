@@ -19,8 +19,8 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Projects
         public ActionResult Index()
         {
-            //   var projects = db.Galleries.ToList();
             var projects = db.Galleries.OfType<Project>().ToList();
+
             return View(projects);
         }
 
@@ -50,44 +50,12 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Description,Date")] Project project, HttpPostedFileBase photo)
+        public ActionResult Create([Bind(Include = "Title,Description,Date")] Project project)
         {
-            var validImageTypes = new string[]
-             {
-                    "image/gif",
-                    "image/png",
-                    "image/jpeg"
-             };
-
-            if (photo == null || photo.ContentLength == 0)
-            {
-               // ModelState.AddModelError("photo", "This field is required");
-            }
-            else if (!validImageTypes.Contains(photo.ContentType))
-            {
-                ModelState.AddModelError("photo", "Please choose either a GIF, JPEG or PNG image.");
-            }
-
             if (ModelState.IsValid)
             {
-                var proj = db.Galleries.Add(project);
+                db.Galleries.Add(project);
                 db.SaveChanges();
-
-                if (photo != null && photo.ContentLength > 0)
-                {
-                    string name = Path.GetFileName(photo.FileName);
-                    var uploadDir = "~/Content/uploads";
-                    var imagePath = Path.Combine(Server.MapPath(uploadDir), photo.FileName);
-                    var imageUrl = Path.Combine(uploadDir, photo.FileName);
-
-                    photo.SaveAs(imagePath);
-
-                    Photo foto = new Photo();
-                    foto.Path = imageUrl;
-                    foto.GalleryId = proj.GalleryId;
-                    db.Photos.Add(foto);
-                    db.SaveChanges();
-                }
 
                 return RedirectToAction("Index");
             }
