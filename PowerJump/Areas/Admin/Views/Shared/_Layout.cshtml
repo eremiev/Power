@@ -23,7 +23,11 @@
 
                     <li>@Html.ActionLink("Проекти", "Index", "Projects")</li>
                     <li>@Html.ActionLink("Събития", "Index", "Events")</li>
-                    <li>@Html.ActionLink("Снимки", "Index", "Photos")</li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Снимки", "Index", "Photos")</li>
+                    }
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

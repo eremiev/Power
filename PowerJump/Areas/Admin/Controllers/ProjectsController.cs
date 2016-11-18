@@ -61,7 +61,7 @@ namespace PowerJump.Areas.Admin.Controllers
 
             if (photo == null || photo.ContentLength == 0)
             {
-                ModelState.AddModelError("photo", "This field is required");
+               // ModelState.AddModelError("photo", "This field is required");
             }
             else if (!validImageTypes.Contains(photo.ContentType))
             {
@@ -147,7 +147,8 @@ namespace PowerJump.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Project project = (Project)db.Galleries.Find(id);
-            // TODO: delete all photos releated to this project
+            var uploadDir = "~/Content/uploads/" + project.GalleryId;
+            Directory.Delete(Server.MapPath(uploadDir), true);
             db.Galleries.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");

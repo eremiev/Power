@@ -51,7 +51,7 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Events,Projects")] Photo photo, FormCollection form, HttpPostedFileBase image)
+        public ActionResult Create([Bind(Include = "Events,Projects")] Photo photoModel, FormCollection form, HttpPostedFileBase uploadImage)
         {
             Gallery gallery = null;
             string dropdownEvent = form["Events"];
@@ -63,7 +63,7 @@ namespace PowerJump.Areas.Admin.Controllers
                     "image/png",
                     "image/jpeg"
          };
-            //TODO: save image with same filename
+
             if (!string.IsNullOrEmpty(dropdownEvent))
                 gallery = db.Galleries.Find(Convert.ToInt32(dropdownEvent));
             else if (!string.IsNullOrEmpty(dropdownProject))
@@ -72,27 +72,33 @@ namespace PowerJump.Areas.Admin.Controllers
                 ModelState.AddModelError("dropdown", "Please chose Event or Project!");
 
 
-            if (image == null || image.ContentLength == 0)
-                ModelState.AddModelError("image", "This field is required");
-            else if (!validImageTypes.Contains(image.ContentType))
-                ModelState.AddModelError("image", "Please choose either a GIF, JPEG or PNG image.");
+            if (uploadImage == null || uploadImage.ContentLength == 0)
+                ModelState.AddModelError("uploadImage", "This field is required");
+            else if (!validImageTypes.Contains(uploadImage.ContentType))
+                ModelState.AddModelError("uploadImage", "Please choose either a GIF, JPEG or PNG image.");
 
             if (ModelState.IsValid)
             {
                 if (gallery != null)
                 {
-                    if (image != null && image.ContentLength > 0)
+                    if (uploadImage != null && uploadImage.ContentLength > 0)
                     {
-                        string name = Path.GetFileName(image.FileName);
-                        var uploadDir = "~/Content/uploads";
-                        var imagePath = Path.Combine(Server.MapPath(uploadDir), image.FileName);
-                        var imageUrl = Path.Combine(uploadDir, image.FileName);
-                        image.SaveAs(imagePath);
 
-                        Photo foto = new Photo();
-                        foto.Path = imageUrl;
-                        foto.GalleryId = gallery.GalleryId;
-                        db.Photos.Add(foto);
+                        Photo photo = new Photo();
+                        photo.GalleryId = gallery.GalleryId;
+                        photo = db.Photos.Add(photo);
+                        db.SaveChanges();
+
+                        string date = DateTime.Now.ToString("M_d_yyyy");
+                        string imageName = photo.Id + "_" + date + "_" + uploadImage.FileName;
+                        var uploadDir = "~/Content/uploads/" + gallery.GalleryId + "/";
+                        var imagePath = Path.Combine(Server.MapPath(uploadDir), imageName);
+                        var imageUrl = Path.Combine(uploadDir, imageName);
+                        if (!Directory.Exists(uploadDir))
+                            Directory.CreateDirectory(Server.MapPath(uploadDir));
+                        uploadImage.SaveAs(imagePath);
+
+                        photo.Path = imageUrl;
                         db.SaveChanges();
                     }
                 }
@@ -103,7 +109,7 @@ namespace PowerJump.Areas.Admin.Controllers
             ViewBag.Events = new SelectList(db.Galleries.OfType<Event>(), "GalleryId", "Title");
             ViewBag.Projects = new SelectList(db.Galleries.OfType<Project>(), "GalleryId", "Title");
 
-            return View(photo);
+            return View(photoModel);
         }
 
         // GET: Admin/Photos/Edit/5
@@ -157,14 +163,14 @@ namespace PowerJump.Areas.Admin.Controllers
         // POST: Admin/Photos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id, string goTo)
+        public ActionResult DeleteConfirmed(int id, string goToController, string goToAction)
         {
             Photo photo = db.Photos.Find(id);
 
             System.IO.File.Delete(Server.MapPath(photo.Path));
             db.Photos.Remove(photo);
             db.SaveChanges();
-            return RedirectToAction("Index", goTo);
+            return RedirectToAction(goToAction, goToController);
         }
 
         protected override void Dispose(bool disposing)

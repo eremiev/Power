@@ -9,16 +9,27 @@
 <div>
     <h4>Photo</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <div class="dl-horizontal">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="bs-component">
+                        <div class="well well-lg image" style='background-image:url("@Url.Content(item.Path)");'>
+                            @using (Html.BeginForm("Delete", "Photos", new { id = item.Id, goToController = "Photos", goToAction = "Index" }, FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="submit" value="Delete" class="btn btn-default" />
+                            }
+                        </div>
+                    </div>
+                </div>
 
-        @foreach (var item in Model)
-        {
-            //TODO: show image in background-image and add delete button
-            <img src="@Url.Content(item.Path)" alt="Image" alt="Image" width="100" height="100" />
-        }
 
+            }
+        </div>
 
-    </dl>
+    </div>
 </div>
 <p>
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@

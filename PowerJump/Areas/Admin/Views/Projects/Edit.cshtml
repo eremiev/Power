@@ -61,7 +61,7 @@
 
 @if (Model.Photos.Count > 0)
 {
-    using (Html.BeginForm("Delete", "Photos", new { id = Model.Photos.ToArray()[0].Id, goTo = "Projects" }, FormMethod.Post))
+    using (Html.BeginForm("Delete", "Photos", new { id = Model.Photos.ToArray()[0].Id, goToController = "Projects", goToAction = "Index" }, FormMethod.Post))
     {
         @Html.AntiForgeryToken()
 
