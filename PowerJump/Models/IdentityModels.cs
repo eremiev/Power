@@ -29,6 +29,8 @@ namespace PowerJump.Models
 
         public DbSet<Photo> Photos { get; set; }
 
+        public DbSet<ProjectLocales> ProjectLocales { get; set; }
+
 
         public static ApplicationDbContext Create()
         {
