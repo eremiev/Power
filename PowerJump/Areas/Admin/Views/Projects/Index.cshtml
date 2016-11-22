@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<PowerJump.Models.Project>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -12,10 +11,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Date)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
@@ -23,23 +22,24 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.GalleryId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.GalleryId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.GalleryId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectLocales.FirstOrDefault().Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectLocales.FirstOrDefault().Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.GalleryId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.GalleryId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.GalleryId })
+            </td>
+        </tr>
+    }
 
 </table>

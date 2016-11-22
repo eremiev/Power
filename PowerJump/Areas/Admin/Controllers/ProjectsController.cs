@@ -19,7 +19,7 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Projects
         public ActionResult Index()
         {
-            var projects = db.Galleries.OfType<Project>().ToList();
+            var projects = db.Galleries.OfType<Project>().Include(b => b.ProjectLocales).ToList();
 
             return View(projects);
         }
@@ -32,6 +32,8 @@ namespace PowerJump.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Project project = (Project)db.Galleries.Find(id);
+            
+                //OfType<Project>().Include(b => b.ProjectLocales).Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -42,6 +44,7 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Projects/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -50,11 +53,13 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Description,Date")] Project project)
+        public ActionResult Create([Bind(Prefix = "Item1", Include = "Date")] Project project, [Bind(Prefix = "Item2", Include = "Title,Description")] ProjectLocales locale)
         {
             if (ModelState.IsValid)
             {
-                db.Galleries.Add(project);
+                locale.Project = project;
+                locale.Locale = "en";
+                db.ProjectLocales.Add(locale);
                 db.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -70,6 +75,7 @@ namespace PowerJump.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Project project = (Project)db.Galleries.Find(id);
             if (project == null)
             {
@@ -83,11 +89,13 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "GalleryId,Title,Description,Date")] Project project)
+        public ActionResult Edit([Bind(Prefix = "Item1", Include = "Date")] Project project, [Bind(Prefix = "Item2", Include = "Title,Description")] ProjectLocales locale)
         {
+            //project, locale = null
             if (ModelState.IsValid)
             {
                 db.Entry(project).State = EntityState.Modified;
+                db.Entry(locale).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
