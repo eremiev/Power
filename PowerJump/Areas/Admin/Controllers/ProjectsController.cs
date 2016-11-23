@@ -32,8 +32,8 @@ namespace PowerJump.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Project project = (Project)db.Galleries.Find(id);
-            
-                //OfType<Project>().Include(b => b.ProjectLocales).Find(id);
+
+            //OfType<Project>().Include(b => b.ProjectLocales).Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -76,7 +76,15 @@ namespace PowerJump.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Project project = (Project)db.Galleries.Find(id);
+
+            //Exception Details: System.InvalidOperationException: A specified Include path is not valid.The EntityType 'PowerJump.Models.Gallery' does not declare a navigation property with the name 'ProjectLocales'.
+
+            Project project = (Project)db.Galleries
+                 .Where(x => x.GalleryId == id)
+                 .Include("ProjectLocales")
+                 //wrong read lazzar ...
+                 .FirstOrDefault();
+
             if (project == null)
             {
                 return HttpNotFound();
@@ -89,13 +97,12 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Prefix = "Item1", Include = "Date")] Project project, [Bind(Prefix = "Item2", Include = "Title,Description")] ProjectLocales locale)
+        public ActionResult Edit([Bind(Include = "GalleryId,Title,Description,Date")] Project project)
         {
             //project, locale = null
             if (ModelState.IsValid)
             {
                 db.Entry(project).State = EntityState.Modified;
-                db.Entry(locale).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
