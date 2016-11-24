@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PowerJump.Models;
+using PowerJump.ModelView;
 using System.IO;
 
 namespace PowerJump.Areas.Admin.Controllers
@@ -19,7 +20,7 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Projects
         public ActionResult Index()
         {
-            var projects = db.Galleries.OfType<Project>().Include(b => b.ProjectLocales).ToList();
+            var projects = db.Galleries.OfType<Project>().Include(b => b.ProjectLocales);
 
             return View(projects);
         }
@@ -76,20 +77,17 @@ namespace PowerJump.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            Project project = db.Galleries.OfType<Project>().Where(x => x.GalleryId == id).FirstOrDefault();
+            ProjectLocales projectLocales = (ProjectLocales)project.ProjectLocales.Where(x => x.Project.GalleryId == id).FirstOrDefault();
 
-            //Exception Details: System.InvalidOperationException: A specified Include path is not valid.The EntityType 'PowerJump.Models.Gallery' does not declare a navigation property with the name 'ProjectLocales'.
+            var compositeModel = new ProjectVM();
+            compositeModel.ProjectModel = project;
+            compositeModel.ProjectLocalesModel = projectLocales;
 
-            Project project = (Project)db.Galleries
-                 .Where(x => x.GalleryId == id)
-                 .Include("ProjectLocales")
-                 //wrong read lazzar ...
-                 .FirstOrDefault();
-
-            if (project == null)
-            {
+            if (compositeModel == null)
                 return HttpNotFound();
-            }
-            return View(project);
+
+            return View(compositeModel);
         }
 
         // POST: Admin/Projects/Edit/5
@@ -97,16 +95,25 @@ namespace PowerJump.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "GalleryId,Title,Description,Date")] Project project)
+        public ActionResult Edit(Project project, ProjectVM compositeModel)
         {
-            //project, locale = null
             if (ModelState.IsValid)
             {
+                // with "test" working.
+                //Project test = db.Galleries.OfType<Project>()
+                //     .Where(x => x.GalleryId == compositeModel.ProjectModel.GalleryId)
+                //     .Include(x => x.ProjectLocales)
+                //     .FirstOrDefault();
+
+                project.Date = compositeModel.ProjectModel.Date;
+                project.ProjectLocales.Single().Title = compositeModel.ProjectLocalesModel.Title;
+                project.ProjectLocales.Single().Description = compositeModel.ProjectLocalesModel.Description;
+
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            return View(compositeModel);
         }
 
         // GET: Admin/Projects/Delete/5

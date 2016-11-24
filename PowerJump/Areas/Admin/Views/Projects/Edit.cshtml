@@ -1,4 +1,4 @@
-﻿@model PowerJump.Models.Project
+﻿@model PowerJump.ModelView.ProjectVM
 
 @{
     ViewBag.Title = "Edit";
@@ -14,29 +14,29 @@
         <h4>Project</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.GalleryId)
+        @Html.HiddenFor(model => model.ProjectModel.GalleryId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ProjectLocales.FirstOrDefault().Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ProjectLocalesModel.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjectLocales.FirstOrDefault().Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProjectLocales.FirstOrDefault().Title, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ProjectLocalesModel.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProjectLocalesModel.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ProjectLocales.FirstOrDefault().Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ProjectLocalesModel.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjectLocales.FirstOrDefault().Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProjectLocales.FirstOrDefault().Description, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ProjectLocalesModel.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProjectLocalesModel.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ProjectModel.Date, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ProjectModel.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProjectModel.Date, "", new { @class = "text-danger" })
             </div>
         </div>
 
