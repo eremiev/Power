@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PowerJump.Models;
+using PowerJump.ModelView;
 using System.IO;
 
 namespace PowerJump.Areas.Admin.Controllers
@@ -19,9 +20,12 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Photos
         public ActionResult Index()
         {
-            ViewBag.Events = db.Galleries.OfType<Event>().ToList();
-            ViewBag.Projects = db.Galleries.OfType<Project>().ToList();
-
+            //TODO: FIX INDEX
+            ProjectAndEventVM compositeModel = new ProjectAndEventVM();
+            compositeModel.EventModel = (Event)db.Galleries.OfType<Event>();
+            compositeModel.ProjectModel = (Project)db.Galleries.OfType<Project>().Include(b => b.ProjectLocales).AsEnumerable<Project>();
+            var tes = db.Galleries.OfType<Project>().Include(b => b.ProjectLocales).AsEnumerable<Project>();
+            var pes = tes.FirstOrDefault();
             return View();
         }
 

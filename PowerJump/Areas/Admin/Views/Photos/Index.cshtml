@@ -1,4 +1,4 @@
-﻿@model List<PowerJump.Models.Photo>
+﻿@model PowerJump.ModelView.ProjectAndEventVM
 
 @{
     ViewBag.Title = "Index";
@@ -22,22 +22,22 @@
                         <table class="table">
                             <tr>
                                 <th>
-                                    Заглавие
+                                 @Html.DisplayFor(modelItem => modelItem.ProjectModel.ProjectLocales.Single().Title)
                                 </th>
                                 <th>
-                                    Описание
+                                    @Html.DisplayFor(modelItem => modelItem.ProjectModel.ProjectLocales.Single().Description)
                                 </th>
                                 <th>
-                                    Снимки
+                                    @Html.DisplayFor(modelItem => modelItem.ProjectModel.Photos)
                                 </th>
                                 <th></th>
                             </tr>
 
-                            @foreach (var item in ViewBag.Projects)
+                            @foreach (var item in Model.ProjectModel.ProjectLocales)
                             {
                                 <tr>
                                     <td>
-                                        @item.Title
+                                        @item.
                                     </td>
                                     <td>
                                         @item.Description
@@ -71,7 +71,7 @@
                                 <th></th>
                             </tr>
 
-                            @foreach (var item in ViewBag.Events)
+                            @foreach (var item in Model.EventModel)
                             {
                                 <tr>
                                     <td>

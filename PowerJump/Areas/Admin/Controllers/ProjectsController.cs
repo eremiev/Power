@@ -34,7 +34,6 @@ namespace PowerJump.Areas.Admin.Controllers
             }
             Project project = (Project)db.Galleries.Find(id);
 
-            //OfType<Project>().Include(b => b.ProjectLocales).Find(id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -99,20 +98,20 @@ namespace PowerJump.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // with "test" working.
-                //Project test = db.Galleries.OfType<Project>()
-                //     .Where(x => x.GalleryId == compositeModel.ProjectModel.GalleryId)
-                //     .Include(x => x.ProjectLocales)
-                //     .FirstOrDefault();
-
+                project = db.Galleries.OfType<Project>()
+                    .Where(x => x.GalleryId == compositeModel.ProjectModel.GalleryId)
+                    .Include(x => x.ProjectLocales)
+                    .FirstOrDefault();
                 project.Date = compositeModel.ProjectModel.Date;
                 project.ProjectLocales.Single().Title = compositeModel.ProjectLocalesModel.Title;
                 project.ProjectLocales.Single().Description = compositeModel.ProjectLocalesModel.Description;
 
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
+
             return View(compositeModel);
         }
 
@@ -136,9 +135,18 @@ namespace PowerJump.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //TODO: FIX Delete 
             Project project = (Project)db.Galleries.Find(id);
             var uploadDir = "~/Content/uploads/" + project.GalleryId;
-            Directory.Delete(Server.MapPath(uploadDir), true);
+            if (Directory.Exists(uploadDir))
+                Directory.Delete(Server.MapPath(uploadDir), true);
+            if (project.ProjectLocales.Count() > 0)
+            {
+                foreach (var locale in project.ProjectLocales)
+                {
+                    db.ProjectLocales.Remove(locale);
+                }
+            }
             db.Galleries.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");

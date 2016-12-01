@@ -31,7 +31,6 @@ namespace PowerJump.Models
 
         public DbSet<ProjectLocales> ProjectLocales { get; set; }
 
-
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
