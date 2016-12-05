@@ -135,14 +135,13 @@ namespace PowerJump.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            //TODO: FIX Delete 
             Project project = (Project)db.Galleries.Find(id);
             var uploadDir = "~/Content/uploads/" + project.GalleryId;
             if (Directory.Exists(uploadDir))
                 Directory.Delete(Server.MapPath(uploadDir), true);
             if (project.ProjectLocales.Count() > 0)
             {
-                foreach (var locale in project.ProjectLocales)
+                foreach (var locale in project.ProjectLocales.ToList())
                 {
                     db.ProjectLocales.Remove(locale);
                 }
