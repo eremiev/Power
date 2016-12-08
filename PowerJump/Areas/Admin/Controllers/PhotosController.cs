@@ -20,13 +20,11 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Photos
         public ActionResult Index()
         {
-            //TODO: FIX INDEX
-            ProjectAndEventVM compositeModel = new ProjectAndEventVM();
-            compositeModel.EventModel = (Event)db.Galleries.OfType<Event>();
-            compositeModel.ProjectModel = (Project)db.Galleries.OfType<Project>().Include(b => b.ProjectLocales).AsEnumerable<Project>();
-            var tes = db.Galleries.OfType<Project>().Include(b => b.ProjectLocales).AsEnumerable<Project>();
-            var pes = tes.FirstOrDefault();
-            return View();
+            ProjectsAndEventsVM compositeModel = new ProjectsAndEventsVM();
+            compositeModel.ProjectsLocalesModel = db.Galleries.OfType<Project>().Select(b => b.ProjectLocales).ToList();
+            // var projects = db.Galleries.OfType<Project>().Include(d => d.ProjectLocales).ToList();
+
+            return View(compositeModel);
         }
 
         // GET: Admin/Photos/Details/5

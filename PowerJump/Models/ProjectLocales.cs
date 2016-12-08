@@ -12,12 +12,12 @@ namespace PowerJump.Models
         public string Locale { get; set; }
 
         [Required]
-        [Display(Name = "Име")]
+        [Display(Name = "Title")]
         [StringLength(60, MinimumLength = 3)]
         public string Title { get; set; }
 
         [Required]
-        [Display(Name = "Описание")]
+        [Display(Name = "Description")]
         [DataType(DataType.MultilineText)]
         [StringLength(5000, MinimumLength = 3)]
         public string Description { get; set; }

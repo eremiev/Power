@@ -1,4 +1,4 @@
-﻿@model PowerJump.ModelView.ProjectAndEventVM
+﻿@model PowerJump.ModelView.ProjectsAndEventsVM
 
 @{
     ViewBag.Title = "Index";
@@ -22,31 +22,31 @@
                         <table class="table">
                             <tr>
                                 <th>
-                                 @Html.DisplayFor(modelItem => modelItem.ProjectModel.ProjectLocales.Single().Title)
+                                    @Html.DisplayNameFor(model => model.ProjectModel.Title)
                                 </th>
                                 <th>
-                                    @Html.DisplayFor(modelItem => modelItem.ProjectModel.ProjectLocales.Single().Description)
+                                    @Html.DisplayNameFor(model => model.ProjectModel.Description)
                                 </th>
                                 <th>
-                                    @Html.DisplayFor(modelItem => modelItem.ProjectModel.Photos)
+                                    @Html.DisplayNameFor(model => model.ProjectModel.Project.Photos)
                                 </th>
                                 <th></th>
                             </tr>
 
-                            @foreach (var item in Model.ProjectModel.ProjectLocales)
+                            @foreach (var item in Model.ProjectsLocalesModel.Single())
                             {
                                 <tr>
                                     <td>
-                                        @item.
+                                        @item.Title
                                     </td>
                                     <td>
                                         @item.Description
                                     </td>
                                     <td>
-                                        @item.Photos.Count
+                                        @item.Project.Photos.Count()
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Виж галерия", "Details", new { id = item.GalleryId }) 
+                                        @Html.ActionLink("Виж галерия", "Details", new { id = item.Project.GalleryId })
                                     </td>
                                 </tr>
                             }
@@ -71,23 +71,23 @@
                                 <th></th>
                             </tr>
 
-                            @foreach (var item in Model.EventModel)
-                            {
-                                <tr>
-                                    <td>
-                                        @item.Title
-                                    </td>
-                                    <td>
-                                        @item.Description
-                                    </td>
-                                    <td>
-                                        @item.Photos.Count
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink("Виж галерия", "Details", new { id = item.GalleryId }) |
-                                    </td>
-                                </tr>
-                            }
+                            @*@foreach (var item in Model.EventModel)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Title
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+                                        <td>
+                                            @item.Photos.Count
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Виж галерия", "Details", new { id = item.GalleryId }) |
+                                        </td>
+                                    </tr>
+                                }*@
 
                         </table>
                     </p>
