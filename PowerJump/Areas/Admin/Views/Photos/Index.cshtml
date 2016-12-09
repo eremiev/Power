@@ -33,20 +33,20 @@
                                 <th></th>
                             </tr>
 
-                            @foreach (var item in Model.ProjectsLocalesModel.Single())
+                            @foreach (var project in Model.ProjectsLocalesModel)
                             {
                                 <tr>
                                     <td>
-                                        @item.Title
+                                        @project.Title
                                     </td>
                                     <td>
-                                        @item.Description
+                                        @project.Description
                                     </td>
                                     <td>
-                                        @item.Project.Photos.Count()
+                                        @project.Project.Photos.Count()
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Виж галерия", "Details", new { id = item.Project.GalleryId })
+                                        @Html.ActionLink("Виж галерия", "Details", new { id = project.Project.GalleryId })
                                     </td>
                                 </tr>
                             }

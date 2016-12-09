@@ -21,8 +21,7 @@ namespace PowerJump.Areas.Admin.Controllers
         public ActionResult Index()
         {
             ProjectsAndEventsVM compositeModel = new ProjectsAndEventsVM();
-            compositeModel.ProjectsLocalesModel = db.Galleries.OfType<Project>().Select(b => b.ProjectLocales).ToList();
-            // var projects = db.Galleries.OfType<Project>().Include(d => d.ProjectLocales).ToList();
+            compositeModel.ProjectsLocalesModel = db.ProjectLocales.Include(m => m.Project).ToList();
 
             return View(compositeModel);
         }
@@ -43,8 +42,10 @@ namespace PowerJump.Areas.Admin.Controllers
         // GET: Admin/Photos/Create
         public ActionResult Create()
         {
-            ViewBag.Events = new SelectList(db.Galleries.OfType<Event>(), "GalleryId", "Title");
-            ViewBag.Projects = new SelectList(db.Galleries.OfType<Project>(), "GalleryId", "Title");
+            //ViewBag.Events = new SelectList(db.Galleries.OfType<Event>(), "GalleryId", "Title");
+            var projects = db.ProjectLocales.Include(m => m.Project);
+            ViewBag.Projects = new SelectList(projects, "Project.GalleryId", "Title");
+
             return View();
         }
 
@@ -72,7 +73,6 @@ namespace PowerJump.Areas.Admin.Controllers
                 gallery = db.Galleries.Find(Convert.ToInt32(dropdownProject));
             else
                 ModelState.AddModelError("dropdown", "Please chose Event or Project!");
-
 
             if (uploadImage == null || uploadImage.ContentLength == 0)
                 ModelState.AddModelError("uploadImage", "This field is required");

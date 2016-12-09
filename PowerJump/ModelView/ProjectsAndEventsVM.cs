@@ -8,9 +8,10 @@ namespace PowerJump.ModelView
 {
     public class ProjectsAndEventsVM
     {
-        public List<ICollection<ProjectLocales>> ProjectsLocalesModel { get; set; }
-        public List<Event> EventModel { get; set; }
+        public List<ProjectLocales> ProjectsLocalesModel { get; set; }
         public ProjectLocales ProjectModel { get; set; }
+
+        public List<Event> EventModel { get; set; }
         public Event ev { get; set; }
     }
 }

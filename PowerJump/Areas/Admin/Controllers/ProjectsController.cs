@@ -137,7 +137,7 @@ namespace PowerJump.Areas.Admin.Controllers
         {
             Project project = (Project)db.Galleries.Find(id);
             var uploadDir = "~/Content/uploads/" + project.GalleryId;
-            if (Directory.Exists(uploadDir))
+            if (Directory.Exists(Server.MapPath(uploadDir)))
                 Directory.Delete(Server.MapPath(uploadDir), true);
             if (project.ProjectLocales.Count() > 0)
             {
